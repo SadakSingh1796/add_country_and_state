@@ -1,0 +1,118 @@
+<div class="container">
+  <div class="flex-vc  gap-2">
+    <label htmlFor="username">Country Name</label>
+    <div class="ml">
+      <input placeholder="Country Name" pInputText id="username" aria-describedby="username-help"
+        [(ngModel)]="countryName" />
+      <!-- <small id="username-help">Enter your country name to reset your password.</small> -->
+      <p-button class="ml" label="Submit" (onClick)="addCountry()"></p-button>
+    </div>
+  </div>
+  <div class="mt">
+    <p-table [value]="countries" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width:20%">Sr</th>
+          <th style="width:20%"> Country Name</th>
+          <th style="width:20%"></th>
+          <th style="width:20%"></th>
+
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-countries let-editing="editing" let-ri="rowIndex">
+        <tr [pEditableRow]="countries">
+          <td>{{1+ri}}</td>
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input pInputText type="text" [(ngModel)]="countries.cName" required>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{countries.cName}}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td></td>
+          <td>
+            <div class="flex align-items-center justify-content-center gap-2">
+              <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                (click)="onRowEditInit(countries)" class="p-button-rounded p-button-text"></button>
+              <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-trash"
+                (click)="removeCountry(ri)" class="p-button-rounded p-button-text"></button>
+              <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                class="p-button-rounded p-button-text p-button-success mr-2"></button>
+              <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                (click)="onRowEditCancel(countries, ri)"
+                class="p-button-rounded p-button-text p-button-danger"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div *ngIf="countries.length>0" class="flex flex-column gap-2 mt">
+    <label htmlFor="username">Select Country</label>
+    <p-dropdown class="mx-3" [options]="countries" optionValue="cName" [(ngModel)]="selectedCountry"
+      placeholder="Select a Country" optionLabel="cName" inputId="float-label"></p-dropdown>
+
+    <div class="mt-2">
+      <label htmlFor="username">State Name</label>
+      <input class="mx-2" placeholder="State Name" pInputText id="username" aria-describedby="username-help"
+        [(ngModel)]="stateName" />
+      <!-- <small id="username-help">Enter your country name to reset your password.</small> -->
+      <p-button class="ml" label="Submit" (onClick)="addState()"></p-button>
+    </div>
+  </div>
+  <div class="mt" *ngIf="countries.length>0">
+    <p-table [value]="states" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width:20%">Sr</th>
+          <th style="width:20%"> Country Name</th>
+          <th style="width:20%"> State Name</th>
+          <th style="width:20%"></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-countries let-editing="editing" let-ri="rowIndex">
+        <tr [pEditableRow]="countries">
+          <td>{{1+ri}}</td>
+          <td>
+            <!-- <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input pInputText type="text" [(ngModel)]="countries.cName" required>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{countries.cName}}
+              </ng-template>
+            </p-cellEditor> -->
+            {{countries.cName}}
+          </td>
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input pInputText type="text" [(ngModel)]="countries.sName" required>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{countries.sName}}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td>
+            <div class="flex align-items-center justify-content-center gap-2">
+              <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                (click)="onRowEditInit(countries)" class="p-button-rounded p-button-text"></button>
+              <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-trash"
+                (click)="removeState(ri)" class="p-button-rounded p-button-text"></button>
+              <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                class="p-button-rounded p-button-text p-button-success mr-2"></button>
+              <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                (click)="onRowEditCancel(countries, ri)"
+                class="p-button-rounded p-button-text p-button-danger"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <p-toast></p-toast>
+</div>
