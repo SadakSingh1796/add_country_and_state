@@ -1,30 +1,23 @@
-# # Use a lightweight base image
-# FROM nginx:alpine
+# Stage 1: Build Angular App
+FROM node:16-alpine as builder
 
-# # Copy the built Angular app to the container
-# COPY dist/country-and-state /usr/share/nginx/html
+WORKDIR /app
 
-# # Expose the default HTTP port
-# EXPOSE 80
+COPY package.json package-lock.json ./
+RUN npm install
 
-# # Command to run the Angular app
-# CMD ["nginx", "-g", "daemon off;"]
-
-FROM docker.io/node:16-alpine as base
-RUN apk add --no-cache git
-WORKDIR /ng-app
-RUN npm install  @angular/cli@15.0.1
-COPY package.json ./
-RUN npm install --f
 COPY . .
-RUN npm run build
+RUN npm run build --prod
 
-FROM docker.io/nginx:stable-alpine
-WORKDIR /usr/share/nginx/html/
+# Stage 2: Create Nginx Container
+FROM nginx:stable-alpine
 
-COPY --from=base /ng-app/dist/country-and-state .
+WORKDIR /usr/share/nginx/html
+
+COPY --from=builder /app/dist/your-angular-app .
+
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
-# COPY /app/nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 1337/tcp
-CMD ["nginx", "-c", "/etc/nginx/conf.d/default.conf", "-g", "daemon off;"]
 
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
