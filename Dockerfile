@@ -14,7 +14,7 @@ FROM nginx:stable-alpine
 
 WORKDIR /usr/share/nginx/html
 
-COPY --from=builder /app/dist/your-angular-app .
+COPY --from=builder /app/dist/country-and-state .
 
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
