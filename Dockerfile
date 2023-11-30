@@ -26,7 +26,7 @@
 FROM docker.io/node:16-alpine as base
 RUN apk add --no-cache git
 WORKDIR /ng-app
-RUN npm install  @angular/cli@15.0.1
+RUN npm install  
 COPY package.json ./
 RUN npm install --f
 COPY . .
